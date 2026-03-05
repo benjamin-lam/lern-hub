@@ -2,6 +2,206 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wissens-Hub</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --bg: #F8F9FA;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: env(safe-area-inset-top) 15px 80px 15px; /* Platz für Home-Indicator */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Suchleiste fixiert oben */
+        .header-sticky {
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            padding: 15px 0;
+            z-index: 100;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #E0E0E0;
+            font-size: 16px; /* Verhindert Auto-Zoom bei iOS */
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #searchInput:focus { border-color: var(--primary); }
+
+        /* Grid für Mobile */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Einspaltig für Handy */
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--card-shadow);
+            border-left: 6px solid #DDD;
+        }
+
+        .card.grundschule { border-left-color: #FFD700; }
+        .card.sekundar { border-left-color: #2C3E50; }
+
+        .card-icon { font-size: 32px; }
+        .card-content h3 { margin: 0; font-size: 18px; }
+        .card-content small { color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Detail-Ansicht als "Full-Screen Sheet" */
+        #detail-view {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: white;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .detail-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #EEE;
+        }
+
+        .back-btn {
+            background: #F0F0F0;
+            border: none;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .detail-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .step-box {
+            background: #F9F9F9;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Anti-Scrolling Button am Ende */
+        .done-btn {
+            background: #32CD32;
+            color: white;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-sticky">
+        <input type="text" id="searchInput" placeholder="Was willst du heute lernen?" onkeyup="filterIndex()">
+    </div>
+
+    <div id="grid" class="grid">
+        <!-- Karten werden hier geladen -->
+    </div>
+
+    <div id="detail-view">
+        <div class="detail-header">
+            <button class="back-btn" onclick="closeDetail()">✕</button>
+            <h2 id="detail-title" style="margin:0; font-size:20px;">Thema</h2>
+        </div>
+        <div id="detail-body" class="detail-body">
+            <!-- Details kommen hier rein -->
+        </div>
+    </div>
+
+    <script>
+        let indexData = [];
+
+        // 1. Lade nur den Index (Performance!)
+        async function loadIndex() {
+            // Für den Anfang simulieren wir den Index hier, später: fetch('index.json')
+            indexData = [
+                { id: "ki-regeln", titel: "KI-Roboter", level: "grundschule", icon: "🤖" },
+                { id: "pythagoras", titel: "Satz des Pythagoras", level: "sekundar", icon: "📐" }
+            ];
+            renderGrid(indexData);
+        }
+
+        function renderGrid(data) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = data.map(item => `
+                <div class="card ${item.level}" onclick="openDetail('${item.id}')">
+                    <div class="card-icon">${item.icon}</div>
+                    <div class="card-content">
+                        <small>${item.level}</small>
+                        <h3>${item.titel}</h3>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 2. Lade Details nur bei Klick (Lazy Loading)
+        async function openDetail(id) {
+            // Hier würdest du fetch(`data/${id}.json`) machen
+            // Dummy-Logik für Demo:
+            const dummyDetails = {
+                "pythagoras": { titel: "Pythagoras", steps: [{t: "Schritt 1", d: "A² suchen"}, {t: "Schritt 2", d: "B² addieren"}] },
+                "ki-regeln": { titel: "KI Regeln", steps: [{t: "Regel 1", d: "Erst fragen"}, {t: "Regel 2", d: "Dann bauen"}] }
+            };
+
+            const data = dummyDetails[id];
+            document.getElementById('detail-title').innerText = data.titel;
+            document.getElementById('detail-body').innerHTML = `
+                ${data.steps.map(s => `<div class="step-box"><strong>${s.t}</strong><p>${s.d}</p></div>`).join('')}
+                <div class="done-btn" onclick="closeDetail()">Fertig! Ich geh jetzt bauen 🚀</div>
+            `;
+            document.getElementById('detail-view').style.display = 'flex';
+        }
+
+        function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
+
+        function filterIndex() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderGrid(indexData.filter(i => i.titel.toLowerCase().includes(q)));
+        }
+
+        loadIndex();
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
     <title>Wissens-Hub</title>
     <style>
         :root { --bg: #f4f4f9; --text: #333; }
