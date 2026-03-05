@@ -1,6 +1,7 @@
 {
   "id": "ki-roboter",
   "titel": "Bauen mit dem KI-Roboter",
+  "intro": "Stell dir vor, du hast einen Roboter, der dir beim Bauen einer Lego-Stadt hilft. So schaffst du es, dass alles cool wird und du den Durchblick behältst!",
   "level": "grundschule",
   "icon": "🤖",
   "steps": [
