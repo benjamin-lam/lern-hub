@@ -1,0 +1,9 @@
+{
+  "titel": "Satz des Pythagoras",
+  "level": "sekundar",
+  "icon": "📐",
+  "steps": [
+    { "t": "Rechter Winkel", "d": "Suche das Dreieck mit der Ecke." },
+    { "t": "Rechnen", "d": "a² + b² = c²" }
+  ]
+}
