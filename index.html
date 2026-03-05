@@ -9,90 +9,96 @@
         :root { --primary: #FFD700; --secondary: #FF4500; --bg: #F0F8FF; }
         body { font-family: 'Comic Sans MS', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
-        .card { background: white; border: 4px solid var(--primary); border-radius: 20px; padding: 20px; cursor: pointer; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); }
+        .card { background: white; border: 4px solid var(--primary); border-radius: 20px; padding: 20px; cursor: pointer; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .card:active { transform: scale(0.98); }
         .hidden { display: none; }
-        input { padding: 15px; width: 100%; max-width: 400px; border-radius: 20px; border: 2px solid var(--primary); margin-bottom: 20px; font-size: 1rem; }
+        input { padding: 15px; width: 100%; max-width: 400px; border-radius: 20px; border: 2px solid var(--primary); margin-bottom: 20px; font-size: 16px; box-sizing: border-box; }
         
+        /* DEBUG/FEHLER STYLES */
+        .error-card { border-color: #ff4444 !important; background: #fff1f1 !important; cursor: default !important; }
+        .error-code { font-family: monospace; background: #333; color: #7fff7f; padding: 10px; border-radius: 5px; display: block; margin-top: 10px; font-size: 0.8rem; overflow-x: auto; }
+
         /* Level-Styles */
         .level-grundschule { border-color: #FFD700; }
         .level-sekundar { border-color: #2c3e50; font-family: sans-serif; border-radius: 5px; }
         
-        .exit-btn { margin-top: 40px; padding: 15px 30px; background: #32CD32; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        .exit-btn { margin-top: 40px; padding: 15px 30px; background: #32CD32; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 5px #228B22; }
+        .exit-btn:active { box-shadow: 0 2px #228B22; transform: translateY(3px); }
 
-        /* Grundschul-Modus: Bunt & Verspielt */
-body.mode-grundschule {
-    --primary: #FFD700;
-    --bg: #F0F8FF;
-    font-family: 'Comic Sans MS', cursive;
-}
-body.mode-grundschule .card { border-radius: 30px; border-width: 5px; }
-
-/* Sekundar-Modus: Clean & Technisch */
-body.mode-sekundar {
-    --primary: #2c3e50;
-    --secondary: #34495e;
-    --bg: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-}
-body.mode-sekundar .card { border-radius: 4px; border-left: 8px solid var(--primary); border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; }
-
-/* Aktiver Button Style */
-.filter-btn { padding: 8px 15px; border: 2px solid var(--primary); border-radius: 20px; cursor: pointer; background: white; }
-.filter-btn.active { background: var(--primary); color: white; }
-
+        body.mode-grundschule { --primary: #FFD700; --bg: #F0F8FF; font-family: 'Comic Sans MS', cursive; }
+        body.mode-sekundar { --primary: #2c3e50; --secondary: #34495e; --bg: #ffffff; font-family: 'Segoe UI', sans-serif; }
+        .filter-btn { padding: 8px 15px; border: 2px solid var(--primary); border-radius: 20px; cursor: pointer; background: white; font-size: 0.9rem; }
+        .filter-btn.active { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
 <header id="main-header">
-    <!-- Neuer dezenter Rückweg -->
     <nav id="breadcrumb" class="hidden" style="margin-bottom: 10px; font-size: 0.9rem;">
         <a href="index.html" style="color: var(--secondary); text-decoration: none;">🏠 Alle Fächer</a> 
         <span id="breadcrumb-separator"> > </span> 
-        <span id="current-category">Mathe</span>
+        <span id="current-category">...</span>
     </nav>
     
     <h1 id="view-title">Lern-Explorer</h1>
-    <input type="text" id="filterInput" placeholder="Suchen..." onkeyup="filterView()">
+    <input type="text" id="filterInput" placeholder="Suchen..." onkeyup="updateDisplay()">
 
-    <div id="level-selector" style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center;">
-    <button onclick="setLevel('grundschule')" id="btn-grundschule" class="filter-btn">🧸 Grundschule</button>
-    <button onclick="setLevel('sekundar')" id="btn-sekundar" class="filter-btn">🔬 Weiterführend</button>
-    <button onclick="setLevel('all')" id="btn-all" class="filter-btn">Alle</button>
-</div>
-
+    <div id="level-selector" style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="setLevel('grundschule')" id="btn-grundschule" class="filter-btn">🧸 Grundschule</button>
+        <button onclick="setLevel('sekundar')" id="btn-sekundar" class="filter-btn">🔬 Weiterführend</button>
+        <button onclick="setLevel('all')" id="btn-all" class="filter-btn">Alle</button>
+    </div>
 </header>
 
+<div id="content-grid" class="grid"></div>
+<div id="detail-view" class="hidden"></div>
 
-    <div id="content-grid" class="grid">
-        <!-- Hier wird alles dynamisch geladen -->
-    </div>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const view = urlParams.get('view'); 
+    const path = urlParams.get('path'); 
 
-    <div id="detail-view" class="hidden">
-        <!-- Deine Detail-Ansicht kommt hier rein -->
-    </div>
+    // Zentrale Hilfsfunktion für Fehler-Anzeige
+    function showError(message, code, targetId = 'content-grid') {
+        const target = document.getElementById(targetId);
+        target.classList.remove('hidden');
+        target.innerHTML = `
+            <div class="card error-card" style="grid-column: 1/-1;">
+                <h2 style="color:#cc0000; margin-top:0;">⚠️ ACHTUNG: FEHLER</h2>
+                <p>${message}</p>
+                ${code ? `<code class="error-code">${code}</code>` : ''}
+                <button onclick="location.href='index.html'" class="exit-btn" style="background:#666; box-shadow:0 5px #444;">Zurück zum Start</button>
+            </div>`;
+    }
 
-    <script>
-        // Logik zur Steuerung der Ansichten
-        const urlParams = new URLSearchParams(window.location.search);
-        const view = urlParams.get('view'); // null (Home), 'thema', oder 'karte'
-        const path = urlParams.get('path'); 
-
-        async function init() {
-            if (!view) {
-                renderHome();
-            } else if (view === 'thema') {
-                renderThema(path);
-            } else if (view === 'karte') {
-                renderKarte(path);
-            }
+    async function safeFetch(url) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}: Datei nicht gefunden.`);
+            return await res.json();
+        } catch (e) {
+            throw new Error(`Pfad: ${url} | Grund: ${e.message}`);
         }
+    }
 
-        // 1. STARTSEITE: Themengebiete
-        async function renderHome() {
-            document.getElementById('view-title').innerText = "Wähle ein Fach";
-            const res = await fetch('themen.json');
-            const data = await res.json();
+    async function init() {
+        // Design-Modus sofort laden
+        const savedLevel = localStorage.getItem('userLevel') || 'all';
+        setLevel(savedLevel, false);
+
+        try {
+            if (!view) await renderHome();
+            else if (view === 'thema') await renderThema(path);
+            else if (view === 'karte') await renderKarte(path);
+        } catch (e) {
+            showError("Beim Laden der Seite ist etwas schiefgegangen.", e.message);
+        }
+    }
+
+    async function renderHome() {
+        document.getElementById('view-title').innerText = "Wähle ein Fach";
+        try {
+            const data = await safeFetch('themen.json');
             const grid = document.getElementById('content-grid');
             grid.innerHTML = data.map(t => `
                 <div class="card category-card" onclick="location.href='?view=thema&path=${t.slug}'">
@@ -100,192 +106,92 @@ body.mode-sekundar .card { border-radius: 4px; border-left: 8px solid var(--prim
                     <p>${t.beschreibung}</p>
                 </div>
             `).join('');
+        } catch (e) {
+            showError("Die Hauptdatei 'themen.json' fehlt oder ist fehlerhaft.", e.message);
         }
-
-// 2. THEMEN-ÜBERSICHT: Lernkarten eines Fachs
-async function renderThema(slug) {
-    const grid = document.getElementById('content-grid');
-    const breadcrumb = document.getElementById('breadcrumb');
-    const categorySpan = document.getElementById('current-category');
-    
-    // Breadcrumb sichtbar machen
-    breadcrumb.classList.remove('hidden');
-    categorySpan.innerText = slug.charAt(0).toUpperCase() + slug.slice(1)
-    
-    const title = document.getElementById('view-title');
-    title.innerText = "Lade " + slug + "...";
-
-    try {
-        const url = `data/${slug}/index.json`; // Pfad zu deiner Datei
-        const res = await fetch(url);
-        
-        if (!res.ok) {
-            throw new Error(`Datei nicht gefunden: ${url} (Status: ${res.status})`);
-        }
-
-        const cards = await res.json();
-        
-        title.innerText = slug.charAt(0).toUpperCase() + slug.slice(1);
-        grid.innerHTML = cards.map(c => `
-            <div class="card level-${c.level}" onclick="location.href='?view=karte&path=${slug}/${c.id}'">
-                <h3>${c.titel}</h3>
-                <p>Level: ${c.level}</p>
-            </div>
-        `).join('');
-
-    updateDisplay();
-        
-    } catch (error) {
-        title.innerText = "Hoppla!";
-        grid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; color: red;">
-                <p>Fehler: ${error.message}</p>
-                <p>Prüfe, ob der Ordner <b>data/${slug}/</b> die Datei <b>index.json</b> enthält.</p>
-                <button onclick="location.href='index.html'" class="exit-btn">Zurück zum Start</button>
-            </div>`;
     }
-}
 
-
-        // 3. DETAIL-ANSICHT: Die Lernkarte
-        async function renderKarte(fullPath) {
-    const res = await fetch(`data/${fullPath}.json`);
-    const data = await res.json();
-    
-    // Design-Klasse für das Level setzen
-    document.body.className = "mode-" + data.level;
-    
-    // Header und Haupt-Grid der Übersicht verstecken
-    document.getElementById('main-header').classList.add('hidden');
-    document.getElementById('content-grid').classList.add('hidden');
-    
-    const detail = document.getElementById('detail-view');
-    detail.classList.remove('hidden');
-    
-    // Die Detailansicht aufbauen
-    detail.innerHTML = `
-        <header style="text-align: center; margin-bottom: 40px; max-width: 800px;">
-            <h1 style="color: var(--secondary); font-size: 2.5rem; margin-bottom: 10px;">
-                ${data.icon} ${data.titel}
-            </h1>
-            <p style="font-size: 1.2rem; line-height: 1.6; color: #555;">
-                ${data.intro || 'Lerne Schritt für Schritt, wie das funktioniert.'}
-            </p>
-        </header>
-
-        <div class="grid">
-            ${data.steps.map((s, i) => `
-                <div class="card" onclick="this.querySelector('.extra-info').style.display = (this.querySelector('.extra-info').style.display === 'block' ? 'none' : 'block')">
-                    <h3 style="margin-top: 0; color: var(--secondary); border-bottom: 2px dashed var(--primary);">
-                        ${i + 1}. ${s.t}
-                    </h3>
-                    <p>${s.d}</p>
-                    <div class="extra-info" style="display: none; margin-top: 10px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
-                        💡 ${s.info || 'Tipp: Probier es direkt aus!'}
-                    </div>
+    async function renderThema(slug) {
+        const grid = document.getElementById('content-grid');
+        const breadcrumb = document.getElementById('breadcrumb');
+        document.getElementById('current-category').innerText = slug.toUpperCase();
+        breadcrumb.classList.remove('hidden');
+        
+        try {
+            const cards = await safeFetch(`data/${slug}/index.json`);
+            document.getElementById('view-title').innerText = "Deine Lernkarten";
+            grid.innerHTML = cards.map(c => `
+                <div class="card level-${c.level}" onclick="location.href='?view=karte&path=${slug}/${c.id}'">
+                    <h3>${c.titel}</h3>
+                    <p>Level: ${c.level}</p>
                 </div>
-            `).join('')}
-        </div>
-
-        <div style="text-align: center; width: 100%;">
-            <button class="exit-btn" onclick="goBuild()">
-                Genug gelernt! Jetzt geh ich BAUEN! 🚀
-            </button>
-            <p style="margin-top: 20px;">
-                <a href="#" onclick="location.reload()" style="color: #888; text-decoration: none; font-size: 0.9rem;">
-                    ⬅ Zurück zur Übersicht
-                </a>
-            </p>
-        </div>
-    `;
-}
-
-// Die "Anti-Scrolling" Funktion
-function goBuild() {
-    alert("Super! Die Inspiration reicht für heute. Mach das Gerät aus und leg los. Viel Erfolg!");
-    window.location.href = "https://google.com"; // Oder eine leere Seite
-}
-
-
-
-
-        // Beim Starten den Modus laden
-document.addEventListener('DOMContentLoaded', () => {
-    const savedLevel = localStorage.getItem('userLevel') || 'all';
-    setLevel(savedLevel, false); // false = nicht neu laden, nur setzen
-});
-
-function setLevel(level, reload = true) {
-    // 1. Im LocalStorage speichern
-    localStorage.setItem('userLevel', level);
-
-    // 2. CSS-Klasse am Body tauschen
-    document.body.classList.remove('mode-grundschule', 'mode-sekundar');
-    if (level !== 'all') {
-        document.body.classList.add('mode-' + level);
+            `).join('');
+            updateDisplay();
+        } catch (e) {
+            showError(`Inhaltsverzeichnis für '${slug}' fehlt.`, `Erwartet: data/${slug}/index.json\nDetails: ${e.message}`);
+        }
     }
 
-    // 3. Buttons optisch hervorheben
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    const activeBtn = document.getElementById('btn-' + level);
-    if (activeBtn) activeBtn.classList.add('active');
+    async function renderKarte(fullPath) {
+        try {
+            const data = await safeFetch(`data/${fullPath}.json`);
+            document.body.className = "mode-" + data.level;
+            document.getElementById('main-header').classList.add('hidden');
+            document.getElementById('content-grid').classList.add('hidden');
+            
+            const detail = document.getElementById('detail-view');
+            detail.classList.remove('hidden');
+            detail.innerHTML = `
+                <header style="text-align: center; margin-bottom: 40px; max-width: 800px;">
+                    <h1 style="color: var(--secondary); font-size: 2.5rem;">${data.icon} ${data.titel}</h1>
+                    <p style="font-size: 1.2rem; line-height: 1.6;">${data.intro || 'Lerne es Schritt für Schritt.'}</p>
+                </header>
+                <div class="grid">
+                    ${data.steps.map((s, i) => `
+                        <div class="card" onclick="const e = this.querySelector('.extra-info'); e.classList.toggle('hidden')">
+                            <h3 style="margin-top: 0; color: var(--secondary); border-bottom: 2px dashed var(--primary);">${i + 1}. ${s.t}</h3>
+                            <p>${s.d}</p>
+                            <div class="extra-info hidden" style="margin-top: 10px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee; padding-top: 10px;">💡 ${s.info || 'Tipp: Probier es aus!'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; width: 100%;">
+                    <button class="exit-btn" onclick="goBuild()">Genug gelernt! Jetzt geh ich BAUEN! 🚀</button>
+                    <p><a href="?view=thema&path=${fullPath.split('/')[0]}" style="color: #888; text-decoration: none;">⬅ Zurück zur Übersicht</a></p>
+                </div>`;
+        } catch (e) {
+            showError("Lernkarte konnte nicht geladen werden.", e.message);
+        }
+    }
 
-    // 4. Wenn wir auf einer Übersichtsseite sind: Karten filtern
-    if (view === 'thema') {
+    function setLevel(level) {
+        localStorage.setItem('userLevel', level);
+        document.body.classList.remove('mode-grundschule', 'mode-sekundar');
+        if (level !== 'all') document.body.classList.add('mode-' + level);
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        if (document.getElementById('btn-' + level)) document.getElementById('btn-' + level).classList.add('active');
         updateDisplay();
     }
-}
 
-function updateDisplay() {
-    const searchQuery = document.getElementById('filterInput').value.toLowerCase();
-    const activeLevel = localStorage.getItem('userLevel') || 'all';
-    const cards = document.getElementsByClassName('card');
+    function updateDisplay() {
+        const query = document.getElementById('filterInput')?.value.toLowerCase() || "";
+        const level = localStorage.getItem('userLevel') || 'all';
+        const cards = document.getElementsByClassName('card');
 
-    for (let card of cards) {
-
-            if (card.classList.contains('category-card')) {
-        card.style.display = card.innerText.toLowerCase().includes(searchQuery) ? "" : "none";
-        continue; 
-    }
-        
-        // 1. Check: Passt das Level?
-        const matchesLevel = (activeLevel === 'all' || card.classList.contains('level-' + activeLevel));
-        
-        // 2. Check: Passt der Suchbegriff?
-        const matchesSearch = card.innerText.toLowerCase().includes(searchQuery);
-
-        // Nur wenn BEIDES stimmt, wird die Karte gezeigt
-        if (matchesLevel && matchesSearch) {
-            card.style.display = "";
-        } else {
-            card.style.display = "none";
+        for (let card of cards) {
+            if (card.classList.contains('error-card')) continue;
+            const matchesLevel = (level === 'all' || card.classList.contains('level-' + level) || card.classList.contains('category-card'));
+            const matchesSearch = card.innerText.toLowerCase().includes(query);
+            card.style.display = (matchesLevel && matchesSearch) ? "" : "none";
         }
     }
-    const visibleCards = Array.from(cards).filter(c => c.style.display !== "none").length;
-const infoBox = document.getElementById('no-results-info') || createInfoBox();
 
-if (visibleCards === 0) {
-    infoBox.innerText = "Nichts gefunden. Vielleicht in einer anderen Altersstufe?";
-    infoBox.classList.remove('hidden');
-} else {
-    infoBox.classList.add('hidden');
-}
+    function goBuild() {
+        alert("Super! Die Inspiration reicht für heute. Ab an die echte Arbeit!");
+        window.location.href = "https://google.com";
+    }
 
-// Kleine Hilfsfunktion für die Box
-function createInfoBox() {
-    const div = document.createElement('div');
-    div.id = 'no-results-info';
-    div.style.textAlign = 'center';
-    div.style.marginTop = '20px';
-    document.getElementById('content-grid').after(div);
-    return div;
-}
-
-}
-
-
-        init();
-        
-    </script>
+    init();
+</script>
 </body>
 </html>
