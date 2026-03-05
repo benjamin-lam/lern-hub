@@ -65,21 +65,40 @@
             `).join('');
         }
 
-        // 2. THEMEN-ÜBERSICHT: Lernkarten eines Fachs
-        async function renderThema(slug) {
-            document.getElementById('view-title').innerText = slug.toUpperCase();
-            const res = await fetch(`data/${slug}/index.json`);
-            const cards = await res.json();
-            
-            // LocalStorage Filter für Level (Optionaler Ausbau)
-            const grid = document.getElementById('content-grid');
-            grid.innerHTML = cards.map(c => `
-                <div class="card level-${c.level}" onclick="location.href='?view=karte&path=${slug}/${c.id}'">
-                    <h3>${c.titel}</h3>
-                    <small>Stufe: ${c.level}</small>
-                </div>
-            `).join('');
+// 2. THEMEN-ÜBERSICHT: Lernkarten eines Fachs
+async function renderThema(slug) {
+    const grid = document.getElementById('content-grid');
+    const title = document.getElementById('view-title');
+    title.innerText = "Lade " + slug + "...";
+
+    try {
+        const url = `data/${slug}/index.json`; // Pfad zu deiner Datei
+        const res = await fetch(url);
+        
+        if (!res.ok) {
+            throw new Error(`Datei nicht gefunden: ${url} (Status: ${res.status})`);
         }
+
+        const cards = await res.json();
+        
+        title.innerText = slug.charAt(0).toUpperCase() + slug.slice(1);
+        grid.innerHTML = cards.map(c => `
+            <div class="card level-${c.level}" onclick="location.href='?view=karte&path=${slug}/${c.id}'">
+                <h3>${c.titel}</h3>
+                <p>Level: ${c.level}</p>
+            </div>
+        `).join('');
+    } catch (error) {
+        title.innerText = "Hoppla!";
+        grid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; color: red;">
+                <p>Fehler: ${error.message}</p>
+                <p>Prüfe, ob der Ordner <b>data/${slug}/</b> die Datei <b>index.json</b> enthält.</p>
+                <button onclick="location.href='index.html'" class="exit-btn">Zurück zum Start</button>
+            </div>`;
+    }
+}
+
 
         // 3. DETAIL-ANSICHT: Die Lernkarte
         async function renderKarte(fullPath) {
