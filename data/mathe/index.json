@@ -1,0 +1,14 @@
+[
+  { 
+    "id": "pythagoras", 
+    "titel": "Satz des Pythagoras", 
+    "level": "sekundar",
+    "icon": "📐"
+  },
+  { 
+    "id": "plusrechnen", 
+    "titel": "Plusrechnen bis 10", 
+    "level": "grundschule",
+    "icon": "➕"
+  }
+]
