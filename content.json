@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ki-regeln",
+    "titel": "Bauen mit dem KI-Roboter",
+    "level": "grundschule",
+    "kategorie": "Technik",
+    "icon": "🤖",
+    "steps": [
+      { "t": "Erst Erklären", "d": "Der Roboter muss sagen, was er bauen will." },
+      { "t": "Stopp sagen", "d": "Wenn es zu wild wird, drück die Pause-Taste." }
+    ]
+  },
+  {
+    "id": "pythagoras",
+    "titel": "Satz des Pythagoras",
+    "level": "sekundar",
+    "kategorie": "Mathe",
+    "icon": "📐",
+    "steps": [
+      { "t": "Der Rechte Winkel", "d": "Suche die 90 Grad Ecke im Dreieck." },
+      { "t": "Die Formel", "d": "a² + b² = c². Die Katheten bauen das Quadrat." }
+    ]
+  }
+]
