@@ -74,7 +74,7 @@ Du lernst gerade Informatik oder willst deiner Klasse helfen?
 
 ## 📚 Weitere Dokumentation
 
-- **[Behind the Scenes](BEHIND_THE_SCENES.md)** – Wie der Code funktioniert und wie du damit arbeitest
+- **[Behind the Scenes](https://github.com/benjamin-lam/lern-hub/blob/main/BEHIND-THE-SCENES.md)** – Wie der Code funktioniert und wie du damit arbeitest
 
 ---
 
