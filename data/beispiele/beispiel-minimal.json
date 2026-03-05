@@ -1,0 +1,18 @@
+{
+  "id": "beispiel-minimal",
+  "titel": "Minimale Lernkarte",
+  "intro": "Das ist das absolute Minimum für eine funktionierende Lernkarte.",
+  "level": "grundschule",
+  "kategorie": "Beispiele",
+  "icon": "✨",
+  "steps": [
+    {
+      "t": "Schritt 1",
+      "d": "Beschreibung des ersten Schritts."
+    },
+    {
+      "t": "Schritt 2",
+      "d": "Beschreibung des zweiten Schritts."
+    }
+  ]
+}

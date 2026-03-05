@@ -1,0 +1,33 @@
+{
+  "id": "beispiel-lernkarte",
+  "titel": "So funktioniert eine Lernkarte",
+  "intro": "Diese Lernkarte zeigt dir, wie eine Lernkarte aufgebaut ist. Perfekt als Vorlage für deine eigene Karte!",
+  "level": "sekundar",
+  "kategorie": "Meta",
+  "icon": "📝",
+  "steps": [
+    {
+      "t": "Schritt 1: Die Grundstruktur",
+      "d": "Jede Lernkarte hat einen Titel, ein Icon und eine kurze Einleitung. Das Icon macht die Karte sofort erkennbar.",
+      "info": "Profi-Tipp: Wähle ein Emoji, das zum Thema passt. Du findest Emojis auf emojipedia.org"
+    },
+    {
+      "t": "Schritt 2: Die Schritte",
+      "d": "Der Hauptinhalt besteht aus 2-5 Schritten. Jeder Schritt hat einen Titel (t) und eine Beschreibung (d). Halte die Schritte kurz und klar!",
+      "info": "Wichtig: Verwende einfache Sprache. Die Zielgruppe sind Kinder und Jugendliche."
+    },
+    {
+      "t": "Schritt 3: Optionale Zusatzinfos",
+      "d": "Jeder Schritt kann ein 'info'-Feld haben. Das ist ein Profi-Tipp oder eine Erklärung für Fortgeschrittene. Es wird erst angezeigt, wenn man draufklickt."
+    },
+    {
+      "t": "Schritt 4: Das Level",
+      "d": "Mit dem 'level'-Feld ('grundschule' oder 'sekundar') gibst du an, für welche Altersgruppe die Karte ist. Das Design passt sich automatisch an!"
+    },
+    {
+      "t": "Schritt 5: Speichern und testen",
+      "d": "Speichere die JSON-Datei im richtigen Ordner (z.B. /data/mathe/pythagoras.json) und registriere sie in der index.json des Fachs. Dann kannst du sie im Browser testen!",
+      "info": "Syntax-Check: Kopiere deine JSON zu jsonlint.com, um Fehler zu finden."
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+name: 💡 Feature Request
+description: Schlage eine neue Funktion vor
+title: "[Feature] "
+labels: ["enhancement", "needs-discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für deine Idee! Bevor du einen Feature Request erstellst, check bitte:
+        - [ ] Gibt es schon ein ähnliches Issue?
+        - [ ] Passt die Idee zur Projekt-Philosophie? (Anti-Scroll, einfach, lehrreich)
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Welches Problem löst das Feature?
+      description: Beschreibe, was aktuell fehlt oder schwierig ist.
+      placeholder: "Es ist schwer, mehrere Themen gleichzeitig zu lernen, weil man zwischen den Fächern hin- und herspringen muss."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Wie könnte die Lösung aussehen?
+      description: Beschreibe deine Idee
+      placeholder: "Ein 'Favoriten'-Button, mit dem man Lernkarten speichern und später in einer eigenen Liste ansehen kann."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Hast du Alternativen überlegt?
+      description: Gibt es andere Wege, das Problem zu lösen?
+
+  - type: dropdown
+    id: target-audience
+    attributes:
+      label: Für welche Zielgruppe?
+      options:
+        - Alle
+        - Grundschule
+        - Sekundarstufe
+        - Eltern/Mentoren
+        - Entwickler
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Wie komplex ist das Feature? (Schätzung)
+      options:
+        - Klein (paar Zeilen Code)
+        - Mittel (neues UI-Element, neue Logik)
+        - Groß (neue Architektur, große Änderungen)
+
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Möchtest du bei der Umsetzung helfen?
+      options:
+        - label: Ja, ich könnte Code beitragen
+        - label: Ja, ich könnte testen
+        - label: Ja, ich könnte Dokumentation schreiben
+        - label: Nein, ich mache nur einen Vorschlag
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Zusätzliche Infos
+      description: Mockups, Links zu ähnlichen Features, etc.
