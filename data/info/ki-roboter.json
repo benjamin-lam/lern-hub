@@ -1,0 +1,38 @@
+{
+  "id": "ki-roboter",
+  "titel": "Bauen mit dem KI-Roboter",
+  "level": "grundschule",
+  "icon": "🤖",
+  "steps": [
+    {
+      "t": "Erst Erklären, dann Bauen",
+      "d": "Frag den Roboter: 'Was hast du verstanden?', bevor er den ersten Stein legt.",
+      "info": "So verhinderst du Chaos, bevor es entsteht!"
+    },
+    {
+      "t": "Ein Plan vor dem Start",
+      "d": "Mach kleine Schritte. Baue erst ein Haus, dann die Straße.",
+      "info": "Kleine Schritte sind leichter zu reparieren."
+    },
+    {
+      "t": "Brauchst du das JETZT?",
+      "d": "Baue nur, was du heute wirklich brauchst. Kein Flughafen für 3 Häuser!",
+      "info": "Das hält deine Stadt einfach und übersichtlich."
+    },
+    {
+      "t": "Das Notizbuch",
+      "d": "Schreib auf, warum du etwas so gebaut hast.",
+      "info": "Dein Zukunfts-Ich wird es dir danken!"
+    },
+    {
+      "t": "STOPP sagen",
+      "d": "Wenn es zu kompliziert wird: Sag Stopp! Einfach ist besser.",
+      "info": "Einfache Dinge funktionieren meistens am besten."
+    },
+    {
+      "t": "DU bist der Chef",
+      "d": "Der Roboter ist dein Werkzeug, aber du entscheidest alles.",
+      "info": "Deine Fantasie gibt den Ton an, nicht die Maschine."
+    }
+  ]
+}
