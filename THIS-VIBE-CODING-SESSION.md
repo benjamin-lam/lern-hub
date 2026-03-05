@@ -19,6 +19,19 @@ Früher war Programmieren wie Latein lernen. Heute ist es eher so, als hättest 
 3. **Baue ein neues Fach** (z.B. "Gaming-Tricks" oder "Kochen").
 4. **Nutze KI:** Kopiere den Code der `index.html` in eine KI deiner Wahl und sag: *"Hey, ich möchte, dass die Karten beim Drüberfahren wackeln. Wie mache ich das?"*
 
+### 🚀 Pro-Tipp: Dein "KI-Flüsterer" Modus
+Du hast eine wilde Idee für ein neues Feature (z.B. eine Quiz-Funktion oder eine Sprachausgabe für die Karten), weißt aber nicht, wo du in der index.html anfangen sollst?
+Hier ist der Workflow für Profis:
+
+    Schnapp dir die Datei LLM-CONTEXT-SPEC.md aus diesem Repo.
+    Kopiere den gesamten Inhalt und füge ihn in deinen Chatbot (ChatGPT, Claude & Co.) ein.
+    Schreib dazu: "Ich arbeite an diesem Projekt. Hier ist die Anleitung, wie es funktioniert. Ich möchte jetzt [DEINE IDEE] einbauen. Hilf mir dabei!"
+
+### Warum das schlau ist:
+Die KI weiß jetzt sofort, dass wir keine komplizierten Frameworks nutzen, dass wir JSON-Dateien im /data-Ordner haben und dass das Design für Kinder einfach bleiben muss. Sie schreibt dir Code, der genau in dieses Puzzleteil passt, anstatt dir irgendwas Vorzusagen, was am Ende nicht funktioniert.
+Der Spirit:
+Lass die KI die "Vokabeln" (den Code) schreiben, während du der Regisseur bleibst, der die Vision und die Struktur vorgibt. So baust du in 10 Minuten Dinge, für die man früher Wochen gebraucht hätte.
+
 ### Ein Wort zum Schluss
 Die Hemmschwelle, etwas Eigenes zu bauen, war noch nie so niedrig wie heute. Nutze die Werkzeuge (GitHub, KI, Web-Standards), um deine Umgebung ein bisschen besser zu machen. 
 
