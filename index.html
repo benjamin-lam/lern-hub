@@ -76,6 +76,13 @@
 // 2. THEMEN-ÜBERSICHT: Lernkarten eines Fachs
 async function renderThema(slug) {
     const grid = document.getElementById('content-grid');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const categorySpan = document.getElementById('current-category');
+    
+    // Breadcrumb sichtbar machen
+    breadcrumb.classList.remove('hidden');
+    categorySpan.innerText = slug.charAt(0).toUpperCase() + slug.slice(1)
+    
     const title = document.getElementById('view-title');
     title.innerText = "Lade " + slug + "...";
 
