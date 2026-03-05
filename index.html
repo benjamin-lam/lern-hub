@@ -22,10 +22,18 @@
 </head>
 <body>
 
-    <header id="main-header">
-        <h1 id="view-title">Lern-Explorer</h1>
-        <input type="text" id="filterInput" placeholder="Suchen..." onkeyup="filterView()">
-    </header>
+<header id="main-header">
+    <!-- Neuer dezenter Rückweg -->
+    <nav id="breadcrumb" class="hidden" style="margin-bottom: 10px; font-size: 0.9rem;">
+        <a href="index.html" style="color: var(--secondary); text-decoration: none;">🏠 Alle Fächer</a> 
+        <span id="breadcrumb-separator"> > </span> 
+        <span id="current-category">Mathe</span>
+    </nav>
+    
+    <h1 id="view-title">Lern-Explorer</h1>
+    <input type="text" id="filterInput" placeholder="Suchen..." onkeyup="filterView()">
+</header>
+
 
     <div id="content-grid" class="grid">
         <!-- Hier wird alles dynamisch geladen -->
