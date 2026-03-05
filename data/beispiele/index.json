@@ -1,0 +1,22 @@
+[
+  {
+    "id": "beispiel-lernkarte",
+    "titel": "So funktioniert eine Lernkarte",
+    "level": "sekundar"
+  },
+  {
+    "id": "beispiel-minimal",
+    "titel": "Minimale Lernkarte",
+    "level": "grundschule"
+  },
+  {
+    "id": "bruchrechnung-addieren",
+    "titel": "Brüche addieren",
+    "level": "grundschule"
+  },
+  {
+    "id": "pflanzen-wachsen",
+    "titel": "Wie wächst eine Pflanze?",
+    "level": "grundschule"
+  }
+]
