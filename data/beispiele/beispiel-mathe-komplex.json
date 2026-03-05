@@ -1,0 +1,35 @@
+{
+  "id": "bruchrechnung-addieren",
+  "titel": "Brüche addieren",
+  "intro": "Brüche addieren ist wie Pizza teilen: Erst müssen die Stücke gleich groß sein! Hier lernst du, wie's geht.",
+  "level": "grundschule",
+  "kategorie": "Mathe",
+  "icon": "🍕",
+  "steps": [
+    {
+      "t": "Schritt 1: Gleiche Nenner finden",
+      "d": "Bevor du Brüche addieren kannst, müssen sie den gleichen Nenner (die Zahl unten) haben. Beispiel: 1/4 + 1/4 = 2/4 (funktioniert sofort!)",
+      "info": "Der Nenner sagt, in wie viele Teile die Pizza geschnitten ist. Wenn beide Pizzen gleich geschnitten sind, kannst du einfach zählen."
+    },
+    {
+      "t": "Schritt 2: Was, wenn die Nenner unterschiedlich sind?",
+      "d": "Bei 1/2 + 1/4 musst du zuerst 1/2 umrechnen. 1/2 = 2/4 (weil 2 Viertel genauso viel sind wie 1 Halbes). Jetzt hast du: 2/4 + 1/4.",
+      "info": "Trick: Finde das kleinste gemeinsame Vielfache der Nenner. Bei 2 und 4 ist das 4."
+    },
+    {
+      "t": "Schritt 3: Zähler addieren",
+      "d": "Jetzt, wo beide Brüche den gleichen Nenner haben, addiere die Zähler (die Zahlen oben): 2/4 + 1/4 = 3/4. Fertig!",
+      "info": "Wichtig: Der Nenner bleibt gleich! Du addierst nur die Zähler."
+    },
+    {
+      "t": "Schritt 4: Kürzen (falls möglich)",
+      "d": "Manchmal kannst du das Ergebnis noch vereinfachen. Beispiel: 2/4 = 1/2 (durch 2 teilen). Bei 3/4 geht das nicht, also ist das schon die fertige Lösung.",
+      "info": "Profi-Tipp: Teile Zähler und Nenner durch die gleiche Zahl, bis es nicht mehr geht (größter gemeinsamer Teiler)."
+    },
+    {
+      "t": "Schritt 5: Übung macht den Meister",
+      "d": "Probiere selbst: 1/3 + 1/6 = ? (Tipp: Der gemeinsame Nenner ist 6. Rechne 1/3 = 2/6, dann 2/6 + 1/6 = 3/6 = 1/2)",
+      "info": "Zeichne die Brüche als Pizza-Stücke auf Papier – so siehst du, ob deine Rechnung stimmt!"
+    }
+  ]
+}
