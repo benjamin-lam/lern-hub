@@ -1,0 +1,85 @@
+name: 📚 Neue Lernkarte vorschlagen
+description: Schlage eine neue Lernkarte vor (oder kündige an, dass du eine erstellen willst)
+title: "[Lernkarte] "
+labels: ["content", "new-card"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Super, dass du eine neue Lernkarte beitragen willst! 🎉
+        
+        **Zwei Optionen:**
+        1. **Du erstellst sie selbst** → Nutze dieses Template, um deine Idee anzukündigen
+        2. **Du machst nur einen Vorschlag** → Beschreibe die Idee, jemand anderes kann sie umsetzen
+
+  - type: input
+    id: title
+    attributes:
+      label: Titel der Lernkarte
+      placeholder: "Satz des Pythagoras"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Fach/Kategorie
+      options:
+        - Mathe
+        - Naturwissenschaften
+        - Sprachen
+        - Musik
+        - Sport
+        - Handwerk
+        - Technik
+        - Neues Fach (bitte in Beschreibung angeben)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: level
+    attributes:
+      label: Level
+      options:
+        - Grundschule (8-10 Jahre)
+        - Sekundarstufe (11-16 Jahre)
+        - Beide
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Inhalt (Kurzfassung)
+      description: Was soll die Lernkarte vermitteln?
+      placeholder: |
+        Die Lernkarte erklärt, wie man mit dem Satz des Pythagoras die fehlende Seite in einem rechtwinkligen Dreieck berechnet.
+        
+        Schritte:
+        1. Rechten Winkel finden
+        2. Seiten benennen (a, b, c)
+        3. Formel anwenden: a² + b² = c²
+        4. Beispiel durchrechnen
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Warum ist das wichtig?
+      description: Welchen Nutzen hat diese Lernkarte?
+      placeholder: "Viele Schüler verstehen nicht, wofür Pythagoras im echten Leben nützlich ist. Diese Karte zeigt praktische Beispiele."
+
+  - type: checkboxes
+    id: status
+    attributes:
+      label: Status
+      options:
+        - label: Ich erstelle die Lernkarte selbst (und reiche einen PR ein)
+        - label: Ich mache nur einen Vorschlag (jemand anderes kann sie erstellen)
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Zusätzliche Infos
+      description: Links, Quellen, Ideen für das Icon, etc.
