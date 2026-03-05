@@ -1,18 +1,14 @@
 [
   {
-    "name": "Informatik & KI",
-    "slug": "info",
-    "icon": "🤖",
-    "beschreibung": "Lerne, wie Roboter denken und wie du mit KI tolle Dinge baust."
-  },
-  {
-    "name": "Mathematik",
+    "name": "Mathe",
     "slug": "mathe",
     "icon": "📐",
-    "beschreibung": "Tricks mit Zahlen und Formen für Schule und Alltag."
+    "beschreibung": "Zahlen und Dreiecke"
+  },
+  {
+    "name": "Informatik",
+    "slug": "info",
+    "icon": "💻",
+    "beschreibung": "Wie Computer denken und KI funktioniert"
   }
-]
-[
-  { "name": "Mathe", "slug": "mathe", "icon": "📐", "beschreibung": "Zahlen und Dreiecke" },
-  { "name": "Informatik", "slug": "info", "icon": "💻", "beschreibung": "Wie Computer denken" }
 ]
