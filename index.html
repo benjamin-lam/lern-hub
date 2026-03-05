@@ -149,29 +149,63 @@ async function renderThema(slug) {
 
         // 3. DETAIL-ANSICHT: Die Lernkarte
         async function renderKarte(fullPath) {
-            const res = await fetch(`data/${fullPath}.json`);
-            const data = await res.json();
-            
-            document.body.className = "level-" + data.level; // Design anpassen
-            document.getElementById('main-header').classList.add('hidden');
-            document.getElementById('content-grid').classList.add('hidden');
-            
-            const detail = document.getElementById('detail-view');
-            detail.classList.remove('hidden');
-            detail.innerHTML = `
-                <h1>${data.icon} ${data.titel}</h1>
-                <div class="grid">
-                    ${data.steps.map((s, i) => `
-                        <div class="card" onclick="this.querySelector('.extra-info').toggleAttribute('hidden')">
-                            <h3>${i+1}. ${s.t}</h3>
-                            <p>${s.d}</p>
-                            <div class="extra-info" hidden style="margin-top:10px; color:#666;">${s.info || 'Tipp: Merk dir das gut!'}</div>
-                        </div>
-                    `).join('')}
+    const res = await fetch(`data/${fullPath}.json`);
+    const data = await res.json();
+    
+    // Design-Klasse für das Level setzen
+    document.body.className = "mode-" + data.level;
+    
+    // Header und Haupt-Grid der Übersicht verstecken
+    document.getElementById('main-header').classList.add('hidden');
+    document.getElementById('content-grid').classList.add('hidden');
+    
+    const detail = document.getElementById('detail-view');
+    detail.classList.remove('hidden');
+    
+    // Die Detailansicht aufbauen
+    detail.innerHTML = `
+        <header style="text-align: center; margin-bottom: 40px; max-width: 800px;">
+            <h1 style="color: var(--secondary); font-size: 2.5rem; margin-bottom: 10px;">
+                ${data.icon} ${data.titel}
+            </h1>
+            <p style="font-size: 1.2rem; line-height: 1.6; color: #555;">
+                ${data.intro || 'Lerne Schritt für Schritt, wie das funktioniert.'}
+            </p>
+        </header>
+
+        <div class="grid">
+            ${data.steps.map((s, i) => `
+                <div class="card" onclick="this.querySelector('.extra-info').style.display = (this.querySelector('.extra-info').style.display === 'block' ? 'none' : 'block')">
+                    <h3 style="margin-top: 0; color: var(--secondary); border-bottom: 2px dashed var(--primary);">
+                        ${i + 1}. ${s.t}
+                    </h3>
+                    <p>${s.d}</p>
+                    <div class="extra-info" style="display: none; margin-top: 10px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
+                        💡 ${s.info || 'Tipp: Probier es direkt aus!'}
+                    </div>
                 </div>
-                <button class="exit-btn" onclick="history.back()">⬅ Zurück zur Übersicht</button>
-            `;
-        }
+            `).join('')}
+        </div>
+
+        <div style="text-align: center; width: 100%;">
+            <button class="exit-btn" onclick="goBuild()">
+                Genug gelernt! Jetzt geh ich BAUEN! 🚀
+            </button>
+            <p style="margin-top: 20px;">
+                <a href="#" onclick="location.reload()" style="color: #888; text-decoration: none; font-size: 0.9rem;">
+                    ⬅ Zurück zur Übersicht
+                </a>
+            </p>
+        </div>
+    `;
+}
+
+// Die "Anti-Scrolling" Funktion
+function goBuild() {
+    alert("Super! Die Inspiration reicht für heute. Mach das Gerät aus und leg los. Viel Erfolg!");
+    window.location.href = "https://google.com"; // Oder eine leere Seite
+}
+
 
 
 
