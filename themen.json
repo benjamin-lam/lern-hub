@@ -1,0 +1,4 @@
+[
+  { "name": "Mathe", "slug": "mathe", "icon": "📐", "beschreibung": "Zahlen und Dreiecke" },
+  { "name": "Informatik", "slug": "info", "icon": "💻", "beschreibung": "Wie Computer denken" }
+]
