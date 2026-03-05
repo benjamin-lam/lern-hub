@@ -95,7 +95,7 @@ body.mode-sekundar .card { border-radius: 4px; border-left: 8px solid var(--prim
             const data = await res.json();
             const grid = document.getElementById('content-grid');
             grid.innerHTML = data.map(t => `
-                <div class="card" onclick="location.href='?view=thema&path=${t.slug}'">
+                <div class="card category-card" onclick="location.href='?view=thema&path=${t.slug}'">
                     <h2>${t.icon} ${t.name}</h2>
                     <p>${t.beschreibung}</p>
                 </div>
@@ -133,8 +133,7 @@ async function renderThema(slug) {
             </div>
         `).join('');
 
-            const currentLevel = localStorage.getItem('userLevel') || 'all';
-    applyLevelFilter(currentLevel);
+    updateDisplay();
         
     } catch (error) {
         title.innerText = "Hoppla!";
@@ -174,13 +173,7 @@ async function renderThema(slug) {
             `;
         }
 
-        function filterView() {
-            let input = document.getElementById('filterInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('card');
-            for (let card of cards) {
-                card.style.display = card.innerText.toLowerCase().includes(input) ? "" : "none";
-            }
-        }
+
 
         // Beim Starten den Modus laden
 document.addEventListener('DOMContentLoaded', () => {
@@ -205,21 +198,57 @@ function setLevel(level, reload = true) {
 
     // 4. Wenn wir auf einer Übersichtsseite sind: Karten filtern
     if (view === 'thema') {
-        applyLevelFilter(level);
+        updateDisplay();
     }
 }
 
-function applyLevelFilter(level) {
+function updateDisplay() {
+    const searchQuery = document.getElementById('filterInput').value.toLowerCase();
+    const activeLevel = localStorage.getItem('userLevel') || 'all';
     const cards = document.getElementsByClassName('card');
+
     for (let card of cards) {
-        if (level === 'all') {
+
+            if (card.classList.contains('category-card')) {
+        card.style.display = card.innerText.toLowerCase().includes(searchQuery) ? "" : "none";
+        continue; 
+    }
+        
+        // 1. Check: Passt das Level?
+        const matchesLevel = (activeLevel === 'all' || card.classList.contains('level-' + activeLevel));
+        
+        // 2. Check: Passt der Suchbegriff?
+        const matchesSearch = card.innerText.toLowerCase().includes(searchQuery);
+
+        // Nur wenn BEIDES stimmt, wird die Karte gezeigt
+        if (matchesLevel && matchesSearch) {
             card.style.display = "";
         } else {
-            // Wir prüfen, ob die Karte die entsprechende Klasse hat
-            card.style.display = card.classList.contains('level-' + level) ? "" : "none";
+            card.style.display = "none";
         }
     }
+    const visibleCards = Array.from(cards).filter(c => c.style.display !== "none").length;
+const infoBox = document.getElementById('no-results-info') || createInfoBox();
+
+if (visibleCards === 0) {
+    infoBox.innerText = "Nichts gefunden. Vielleicht in einer anderen Altersstufe?";
+    infoBox.classList.remove('hidden');
+} else {
+    infoBox.classList.add('hidden');
 }
+
+// Kleine Hilfsfunktion für die Box
+function createInfoBox() {
+    const div = document.createElement('div');
+    div.id = 'no-results-info';
+    div.style.textAlign = 'center';
+    div.style.marginTop = '20px';
+    document.getElementById('content-grid').after(div);
+    return div;
+}
+
+}
+
 
         init();
         
