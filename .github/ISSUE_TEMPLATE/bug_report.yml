@@ -1,0 +1,81 @@
+name: 🐛 Bug Report
+description: Melde einen Fehler im Lern-Hub
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke, dass du einen Bug meldest! Je mehr Details du gibst, desto schneller können wir helfen.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Was ist passiert?
+      description: Beschreibe den Fehler so genau wie möglich.
+      placeholder: "Wenn ich auf die Mathe-Karte 'Pythagoras' klicke, wird nur ein leerer Bildschirm angezeigt."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Was sollte passieren?
+      description: Was hast du erwartet?
+      placeholder: "Die Lernkarte sollte mit allen Schritten angezeigt werden."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Wie kann man den Fehler reproduzieren?
+      description: Schritt-für-Schritt-Anleitung
+      placeholder: |
+        1. Gehe zu https://benjamin-lam.github.io/lern-hub/
+        2. Klicke auf "Mathe"
+        3. Klicke auf "Pythagoras"
+        4. Fehler erscheint
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Welcher Browser?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Andere (bitte in Beschreibung angeben)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Welches Gerät?
+      options:
+        - Desktop/Laptop
+        - Smartphone (Android)
+        - Smartphone (iOS)
+        - Tablet
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Browser-Konsole (F12)
+      description: Gibt es Fehlermeldungen? (Screenshot oder Text einfügen)
+      placeholder: |
+        Fehler: TypeError: Cannot read property 'steps' of undefined
+        at renderKarte (index.html:245)
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Zusätzliche Infos
+      description: Screenshots, Links, oder sonstige Details
