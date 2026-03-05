@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Frage stellen
+    url: https://github.com/benjamin-lam/lern-hub/discussions
+    about: Hast du eine allgemeine Frage? Nutze Discussions!
+  - name: 📖 Dokumentation
+    url: https://github.com/benjamin-lam/lern-hub/blob/main/ONBOARDING.md
+    about: Schau erst in die Dokumentation – vielleicht ist deine Frage schon beantwortet.
