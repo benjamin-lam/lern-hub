@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Wissens-Hub</title>
+    <style>
+        :root { --bg: #f4f4f9; --text: #333; }
+        body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        /* Suche & Filter */
+        .controls { margin-bottom: 30px; display: flex; gap: 10px; }
+        input { padding: 10px; border-radius: 20px; border: 1px solid #ccc; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
+        
+        /* Basis-Karte */
+        .card { padding: 20px; border-radius: 15px; cursor: pointer; transition: 0.3s; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        /* Design-Variante: Grundschule */
+        .card.grundschule { border: 4px solid #FFD700; font-family: 'Comic Sans MS', cursive; }
+        
+        /* Design-Variante: Sekundar */
+        .card.sekundar { border-left: 10px solid #2c3e50; border-radius: 5px; }
+
+        /* Overlay für Details */
+        #detail-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; padding: 40px; box-sizing: border-box; overflow-y: auto; }
+        .close-btn { background: #ff4500; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Wissens-Explorer</h1>
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Thema suchen..." onkeyup="filterThemen()">
+    </div>
+
+    <div id="grid" class="grid"></div>
+
+    <div id="detail-view">
+        <button class="close-btn" onclick="closeDetail()">⬅ Zurück</button>
+        <div id="detail-content"></div>
+    </div>
+
+    <script>
+        let allThemen = [];
+
+        async function init() {
+            const res = await fetch('content.json');
+            allThemen = await res.json();
+            renderGrid(allThemen);
+        }
+
+        function renderGrid(themen) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = themen.map(t => `
+                <div class="card ${t.level}" onclick="showDetail('${t.id}')">
+                    <span>${t.icon}</span>
+                    <h3>${t.titel}</h3>
+                    <small>${t.kategorie} (${t.level})</small>
+                </div>
+            `).join('');
+        }
+
+        function showDetail(id) {
+            const t = allThemen.find(item => item.id === id);
+            const detail = document.getElementById('detail-content');
+            detail.innerHTML = `
+                <h2>${t.icon} ${t.titel}</h2>
+                <div class="steps-grid">
+                    ${t.steps.map(s => `<div class="card"><strong>${s.t}</strong><p>${s.d}</p></div>`).join('')}
+                </div>
+            `;
+            document.getElementById('detail-view').style.display = 'block';
+        }
+
+        function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
+
+        function filterThemen() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allThemen.filter(t => t.titel.toLowerCase().includes(query));
+            renderGrid(filtered);
+        }
+
+        init();
+    </script>
+</body>
+</html>
