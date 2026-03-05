@@ -18,6 +18,28 @@
         .level-sekundar { border-color: #2c3e50; font-family: sans-serif; border-radius: 5px; }
         
         .exit-btn { margin-top: 40px; padding: 15px 30px; background: #32CD32; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+
+        /* Grundschul-Modus: Bunt & Verspielt */
+body.mode-grundschule {
+    --primary: #FFD700;
+    --bg: #F0F8FF;
+    font-family: 'Comic Sans MS', cursive;
+}
+body.mode-grundschule .card { border-radius: 30px; border-width: 5px; }
+
+/* Sekundar-Modus: Clean & Technisch */
+body.mode-sekundar {
+    --primary: #2c3e50;
+    --secondary: #34495e;
+    --bg: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+}
+body.mode-sekundar .card { border-radius: 4px; border-left: 8px solid var(--primary); border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; }
+
+/* Aktiver Button Style */
+.filter-btn { padding: 8px 15px; border: 2px solid var(--primary); border-radius: 20px; cursor: pointer; background: white; }
+.filter-btn.active { background: var(--primary); color: white; }
+
     </style>
 </head>
 <body>
@@ -32,6 +54,13 @@
     
     <h1 id="view-title">Lern-Explorer</h1>
     <input type="text" id="filterInput" placeholder="Suchen..." onkeyup="filterView()">
+
+    <div id="level-selector" style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center;">
+    <button onclick="setLevel('grundschule')" id="btn-grundschule" class="filter-btn">🧸 Grundschule</button>
+    <button onclick="setLevel('sekundar')" id="btn-sekundar" class="filter-btn">🔬 Weiterführend</button>
+    <button onclick="setLevel('all')" id="btn-all" class="filter-btn">Alle</button>
+</div>
+
 </header>
 
 
@@ -103,6 +132,10 @@ async function renderThema(slug) {
                 <p>Level: ${c.level}</p>
             </div>
         `).join('');
+
+            const currentLevel = localStorage.getItem('userLevel') || 'all';
+    applyLevelFilter(currentLevel);
+        
     } catch (error) {
         title.innerText = "Hoppla!";
         grid.innerHTML = `
@@ -149,7 +182,47 @@ async function renderThema(slug) {
             }
         }
 
+        // Beim Starten den Modus laden
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLevel = localStorage.getItem('userLevel') || 'all';
+    setLevel(savedLevel, false); // false = nicht neu laden, nur setzen
+});
+
+function setLevel(level, reload = true) {
+    // 1. Im LocalStorage speichern
+    localStorage.setItem('userLevel', level);
+
+    // 2. CSS-Klasse am Body tauschen
+    document.body.classList.remove('mode-grundschule', 'mode-sekundar');
+    if (level !== 'all') {
+        document.body.classList.add('mode-' + level);
+    }
+
+    // 3. Buttons optisch hervorheben
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById('btn-' + level);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // 4. Wenn wir auf einer Übersichtsseite sind: Karten filtern
+    if (view === 'thema') {
+        applyLevelFilter(level);
+    }
+}
+
+function applyLevelFilter(level) {
+    const cards = document.getElementsByClassName('card');
+    for (let card of cards) {
+        if (level === 'all') {
+            card.style.display = "";
+        } else {
+            // Wir prüfen, ob die Karte die entsprechende Klasse hat
+            card.style.display = card.classList.contains('level-' + level) ? "" : "none";
+        }
+    }
+}
+
         init();
+        
     </script>
 </body>
 </html>
