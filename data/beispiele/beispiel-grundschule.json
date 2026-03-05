@@ -1,0 +1,35 @@
+{
+  "id": "pflanzen-wachsen",
+  "titel": "Wie wächst eine Pflanze?",
+  "intro": "Hast du dich schon mal gefragt, wie aus einem winzigen Samen eine große Pflanze wird? Lass uns das zusammen herausfinden!",
+  "level": "grundschule",
+  "kategorie": "Naturwissenschaften",
+  "icon": "🌱",
+  "steps": [
+    {
+      "t": "Schritt 1: Der Samen",
+      "d": "Alles beginnt mit einem Samen. In jedem Samen steckt eine Baby-Pflanze, die nur darauf wartet zu wachsen. Der Samen braucht Erde, Wasser und Licht.",
+      "info": "Tipp: Nicht alle Samen sind gleich! Manche sind so klein wie ein Staubkorn, andere so groß wie eine Kokosnuss."
+    },
+    {
+      "t": "Schritt 2: Das Wasser",
+      "d": "Wenn du den Samen gießt, fängt er an zu quellen (er wird größer und weicher). Das ist das Signal für die Baby-Pflanze: 'Los geht's!'",
+      "info": "Aber Achtung: Zu viel Wasser ist schlecht! Die Pflanze kann ertrinken."
+    },
+    {
+      "t": "Schritt 3: Die Wurzeln",
+      "d": "Zuerst wächst eine kleine Wurzel nach unten in die Erde. Die Wurzel holt Wasser und Nährstoffe für die Pflanze.",
+      "info": "Wurzeln sind wie Strohhalme – sie saugen das Wasser auf und schicken es nach oben zum Rest der Pflanze."
+    },
+    {
+      "t": "Schritt 4: Der Stängel und die Blätter",
+      "d": "Dann kommt ein kleiner Stängel aus der Erde. An ihm wachsen die ersten grünen Blätter. Die Blätter fangen das Sonnenlicht ein – das ist das 'Essen' der Pflanze!",
+      "info": "Fun Fact: Pflanzen können aus Licht und Luft ihr Essen machen. Das nennt man Photosynthese."
+    },
+    {
+      "t": "Schritt 5: Die Pflanze wird groß",
+      "d": "Jetzt wächst die Pflanze jeden Tag ein bisschen mehr. Sie bekommt mehr Blätter, wird größer und irgendwann vielleicht sogar Blüten oder Früchte!",
+      "info": "Probier's aus: Pflanze eine Bohne in einen Blumentopf und schau jeden Tag nach, was passiert. Nach einer Woche siehst du schon die ersten Blätter!"
+    }
+  ]
+}
