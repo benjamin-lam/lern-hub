@@ -2,283 +2,117 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wissens-Hub</title>
     <style>
-        :root {
-            --primary: #4A90E2;
-            --bg: #F8F9FA;
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: env(safe-area-inset-top) 15px 80px 15px; /* Platz für Home-Indicator */
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Suchleiste fixiert oben */
-        .header-sticky {
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            padding: 15px 0;
-            z-index: 100;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: 2px solid #E0E0E0;
-            font-size: 16px; /* Verhindert Auto-Zoom bei iOS */
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        #searchInput:focus { border-color: var(--primary); }
-
-        /* Grid für Mobile */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Einspaltig für Handy */
-            gap: 15px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: var(--card-shadow);
-            border-left: 6px solid #DDD;
-        }
-
-        .card.grundschule { border-left-color: #FFD700; }
-        .card.sekundar { border-left-color: #2C3E50; }
-
-        .card-icon { font-size: 32px; }
-        .card-content h3 { margin: 0; font-size: 18px; }
-        .card-content small { color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* Detail-Ansicht als "Full-Screen Sheet" */
-        #detail-view {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: white;
-            z-index: 200;
-            display: none;
-            flex-direction: column;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .detail-header {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #EEE;
-        }
-
-        .back-btn {
-            background: #F0F0F0;
-            border: none;
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            font-size: 20px;
-            margin-right: 15px;
-        }
-
-        .detail-body {
-            padding: 20px;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-
-        .step-box {
-            background: #F9F9F9;
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--primary);
-        }
-
-        /* Anti-Scrolling Button am Ende */
-        .done-btn {
-            background: #32CD32;
-            color: white;
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: bold;
-            margin-top: 20px;
-            cursor: pointer;
-        }
+        /* BASIS DESIGN (Mobile First) */
+        :root { --primary: #FFD700; --secondary: #FF4500; --bg: #F0F8FF; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
+        .card { background: white; border: 4px solid var(--primary); border-radius: 20px; padding: 20px; cursor: pointer; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); }
+        .hidden { display: none; }
+        input { padding: 15px; width: 100%; max-width: 400px; border-radius: 20px; border: 2px solid var(--primary); margin-bottom: 20px; font-size: 1rem; }
+        
+        /* Level-Styles */
+        .level-grundschule { border-color: #FFD700; }
+        .level-sekundar { border-color: #2c3e50; font-family: sans-serif; border-radius: 5px; }
+        
+        .exit-btn { margin-top: 40px; padding: 15px 30px; background: #32CD32; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="header-sticky">
-        <input type="text" id="searchInput" placeholder="Was willst du heute lernen?" onkeyup="filterIndex()">
+    <header id="main-header">
+        <h1 id="view-title">Lern-Explorer</h1>
+        <input type="text" id="filterInput" placeholder="Suchen..." onkeyup="filterView()">
+    </header>
+
+    <div id="content-grid" class="grid">
+        <!-- Hier wird alles dynamisch geladen -->
     </div>
 
-    <div id="grid" class="grid">
-        <!-- Karten werden hier geladen -->
-    </div>
-
-    <div id="detail-view">
-        <div class="detail-header">
-            <button class="back-btn" onclick="closeDetail()">✕</button>
-            <h2 id="detail-title" style="margin:0; font-size:20px;">Thema</h2>
-        </div>
-        <div id="detail-body" class="detail-body">
-            <!-- Details kommen hier rein -->
-        </div>
+    <div id="detail-view" class="hidden">
+        <!-- Deine Detail-Ansicht kommt hier rein -->
     </div>
 
     <script>
-        let indexData = [];
-
-        // 1. Lade nur den Index (Performance!)
-        async function loadIndex() {
-            // Für den Anfang simulieren wir den Index hier, später: fetch('index.json')
-            indexData = [
-                { id: "ki-regeln", titel: "KI-Roboter", level: "grundschule", icon: "🤖" },
-                { id: "pythagoras", titel: "Satz des Pythagoras", level: "sekundar", icon: "📐" }
-            ];
-            renderGrid(indexData);
-        }
-
-        function renderGrid(data) {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = data.map(item => `
-                <div class="card ${item.level}" onclick="openDetail('${item.id}')">
-                    <div class="card-icon">${item.icon}</div>
-                    <div class="card-content">
-                        <small>${item.level}</small>
-                        <h3>${item.titel}</h3>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // 2. Lade Details nur bei Klick (Lazy Loading)
-        async function openDetail(id) {
-            // Hier würdest du fetch(`data/${id}.json`) machen
-            // Dummy-Logik für Demo:
-            const dummyDetails = {
-                "pythagoras": { titel: "Pythagoras", steps: [{t: "Schritt 1", d: "A² suchen"}, {t: "Schritt 2", d: "B² addieren"}] },
-                "ki-regeln": { titel: "KI Regeln", steps: [{t: "Regel 1", d: "Erst fragen"}, {t: "Regel 2", d: "Dann bauen"}] }
-            };
-
-            const data = dummyDetails[id];
-            document.getElementById('detail-title').innerText = data.titel;
-            document.getElementById('detail-body').innerHTML = `
-                ${data.steps.map(s => `<div class="step-box"><strong>${s.t}</strong><p>${s.d}</p></div>`).join('')}
-                <div class="done-btn" onclick="closeDetail()">Fertig! Ich geh jetzt bauen 🚀</div>
-            `;
-            document.getElementById('detail-view').style.display = 'flex';
-        }
-
-        function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
-
-        function filterIndex() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            renderGrid(indexData.filter(i => i.titel.toLowerCase().includes(q)));
-        }
-
-        loadIndex();
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Wissens-Hub</title>
-    <style>
-        :root { --bg: #f4f4f9; --text: #333; }
-        body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        
-        /* Suche & Filter */
-        .controls { margin-bottom: 30px; display: flex; gap: 10px; }
-        input { padding: 10px; border-radius: 20px; border: 1px solid #ccc; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
-        
-        /* Basis-Karte */
-        .card { padding: 20px; border-radius: 15px; cursor: pointer; transition: 0.3s; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        
-        /* Design-Variante: Grundschule */
-        .card.grundschule { border: 4px solid #FFD700; font-family: 'Comic Sans MS', cursive; }
-        
-        /* Design-Variante: Sekundar */
-        .card.sekundar { border-left: 10px solid #2c3e50; border-radius: 5px; }
-
-        /* Overlay für Details */
-        #detail-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; padding: 40px; box-sizing: border-box; overflow-y: auto; }
-        .close-btn { background: #ff4500; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-    <h1>🚀 Wissens-Explorer</h1>
-    <div class="controls">
-        <input type="text" id="searchInput" placeholder="Thema suchen..." onkeyup="filterThemen()">
-    </div>
-
-    <div id="grid" class="grid"></div>
-
-    <div id="detail-view">
-        <button class="close-btn" onclick="closeDetail()">⬅ Zurück</button>
-        <div id="detail-content"></div>
-    </div>
-
-    <script>
-        let allThemen = [];
+        // Logik zur Steuerung der Ansichten
+        const urlParams = new URLSearchParams(window.location.search);
+        const view = urlParams.get('view'); // null (Home), 'thema', oder 'karte'
+        const path = urlParams.get('path'); 
 
         async function init() {
-            const res = await fetch('content.json');
-            allThemen = await res.json();
-            renderGrid(allThemen);
+            if (!view) {
+                renderHome();
+            } else if (view === 'thema') {
+                renderThema(path);
+            } else if (view === 'karte') {
+                renderKarte(path);
+            }
         }
 
-        function renderGrid(themen) {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = themen.map(t => `
-                <div class="card ${t.level}" onclick="showDetail('${t.id}')">
-                    <span>${t.icon}</span>
-                    <h3>${t.titel}</h3>
-                    <small>${t.kategorie} (${t.level})</small>
+        // 1. STARTSEITE: Themengebiete
+        async function renderHome() {
+            document.getElementById('view-title').innerText = "Wähle ein Fach";
+            const res = await fetch('themen.json');
+            const data = await res.json();
+            const grid = document.getElementById('content-grid');
+            grid.innerHTML = data.map(t => `
+                <div class="card" onclick="location.href='?view=thema&path=${t.slug}'">
+                    <h2>${t.icon} ${t.name}</h2>
+                    <p>${t.beschreibung}</p>
                 </div>
             `).join('');
         }
 
-        function showDetail(id) {
-            const t = allThemen.find(item => item.id === id);
-            const detail = document.getElementById('detail-content');
-            detail.innerHTML = `
-                <h2>${t.icon} ${t.titel}</h2>
-                <div class="steps-grid">
-                    ${t.steps.map(s => `<div class="card"><strong>${s.t}</strong><p>${s.d}</p></div>`).join('')}
+        // 2. THEMEN-ÜBERSICHT: Lernkarten eines Fachs
+        async function renderThema(slug) {
+            document.getElementById('view-title').innerText = slug.toUpperCase();
+            const res = await fetch(`data/${slug}/index.json`);
+            const cards = await res.json();
+            
+            // LocalStorage Filter für Level (Optionaler Ausbau)
+            const grid = document.getElementById('content-grid');
+            grid.innerHTML = cards.map(c => `
+                <div class="card level-${c.level}" onclick="location.href='?view=karte&path=${slug}/${c.id}'">
+                    <h3>${c.titel}</h3>
+                    <small>Stufe: ${c.level}</small>
                 </div>
-            `;
-            document.getElementById('detail-view').style.display = 'block';
+            `).join('');
         }
 
-        function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
+        // 3. DETAIL-ANSICHT: Die Lernkarte
+        async function renderKarte(fullPath) {
+            const res = await fetch(`data/${fullPath}.json`);
+            const data = await res.json();
+            
+            document.body.className = "level-" + data.level; // Design anpassen
+            document.getElementById('main-header').classList.add('hidden');
+            document.getElementById('content-grid').classList.add('hidden');
+            
+            const detail = document.getElementById('detail-view');
+            detail.classList.remove('hidden');
+            detail.innerHTML = `
+                <h1>${data.icon} ${data.titel}</h1>
+                <div class="grid">
+                    ${data.steps.map((s, i) => `
+                        <div class="card" onclick="this.querySelector('.extra-info').toggleAttribute('hidden')">
+                            <h3>${i+1}. ${s.t}</h3>
+                            <p>${s.d}</p>
+                            <div class="extra-info" hidden style="margin-top:10px; color:#666;">${s.info || 'Tipp: Merk dir das gut!'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="exit-btn" onclick="history.back()">⬅ Zurück zur Übersicht</button>
+            `;
+        }
 
-        function filterThemen() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allThemen.filter(t => t.titel.toLowerCase().includes(query));
-            renderGrid(filtered);
+        function filterView() {
+            let input = document.getElementById('filterInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let card of cards) {
+                card.style.display = card.innerText.toLowerCase().includes(input) ? "" : "none";
+            }
         }
 
         init();
