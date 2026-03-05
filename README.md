@@ -72,19 +72,15 @@ Du lernst gerade Informatik oder willst deiner Klasse helfen?
 
 ---
 
-## 📚 Dokumentation
-
+---
+## 📚 Weitere Dokumentation
 - **[Onboarding](ONBOARDING.md)** – Deine ersten 5 Minuten
 - **[Behind the Scenes](BEHIND-THE-SCENES.md)** – Technische Architektur
 - **[Contributing](CONTRIBUTING.md)** – So trägst du bei
 - **[Troubleshooting](TROUBLESHOOTING.md)** – Häufige Probleme lösen
 - **[Beispiel-Lernkarten](data/beispiele/)** – Vorlagen zum Kopieren
 
----
-## 📚 Weitere Dokumentation
-
-- **[Behind the Scenes](https://github.com/benjamin-lam/lern-hub/blob/main/BEHIND-THE-SCENES.md)** – Wie der Code funktioniert und wie du damit arbeitest
-
+- vorbereiteter Chat: https://chatgpt.com/g/g-69a98a41242081918e6ca0feaafb9753-lern-hub-mentor
 ---
 
 ## ⚠️ Disclaimer & Spirit
